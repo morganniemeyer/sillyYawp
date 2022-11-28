@@ -35,4 +35,10 @@ describe('restaurant routes', () => {
   afterAll(() => {
     pool.end();
   });
+
+  it('should GET a list of all restaurants', async () => {
+    const res = await request(app).get('/restaurants');
+    expect(res.status).toBe(200);
+    expect(res.body).toMatchInlineSnapshot();
+  });
 });
