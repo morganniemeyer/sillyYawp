@@ -91,18 +91,21 @@ describe('restaurant routes', () => {
           Object {
             "detail": "Best restaurant ever!",
             "id": "1",
+            "restaurant_id": "1",
             "stars": 5,
             "user_id": "1",
           },
           Object {
             "detail": "Terrible service :(",
             "id": "2",
+            "restaurant_id": "1",
             "stars": 1,
             "user_id": "2",
           },
           Object {
             "detail": "It was fine.",
             "id": "3",
+            "restaurant_id": "1",
             "stars": 4,
             "user_id": "3",
           },
@@ -122,9 +125,21 @@ describe('restaurant routes', () => {
       Object {
         "detail": "This is such a review",
         "id": "4",
+        "restaurant_id": "1",
         "stars": 3,
-        "user_id": null,
+        "user_id": "4",
       }
     `);
+  });
+
+  it('DELETE /api/v1/reviews/:id should delete a review', async () => {
+    const [agent] = await registerAndLogin();
+    await agent
+      .post('/api/v1/restaurants/4/reviews')
+      .send({ detail: 'This is a different review', stars: 3 });
+    const res = await agent
+      .delete('/api/v1/reviews/4')
+      .send({ message: 'Review is gone!' });
+    expect(res.status).toBe(200);
   });
 });
